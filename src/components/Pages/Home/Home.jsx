@@ -1,8 +1,10 @@
 import MovieCard from 'components/MovieCard/MovieCard';
 import { useEffect, useState } from 'react';
 import { Title, Ul } from './Home.styled';
-export default function Home() {
+import { getPopularMovies } from 'components/API';
+function Home() {
   const [data, setData] = useState(null);
+
   useEffect(() => {
     getPopularMovies(setData);
   }, []);
@@ -17,15 +19,4 @@ export default function Home() {
     </div>
   );
 }
-async function getPopularMovies(setData) {
-  try {
-    const URL =
-      'https://api.themoviedb.org/3/movie/popular?api_key=6bfc661313cc74df3ae441abc4c4707b';
-
-    const qwe = await fetch(URL).then(res => res.json());
-    console.log(qwe);
-    setData(qwe);
-  } catch (error) {
-    console.log(error);
-  }
-}
+export default Home;

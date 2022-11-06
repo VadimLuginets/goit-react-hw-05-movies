@@ -1,8 +1,12 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
-import Home from './Home/Home';
-import Movies from './Movies/Movies';
 import { Ul } from './App.styled';
 import styled from '@emotion/styled';
+const Home = lazy(() => import('./Pages/Home/Home'));
+const Movies = lazy(() => import('./Pages/Movies/Movies'));
+const MovieInfo = lazy(() => import('./Pages/MovieInfo/MovieInfo'));
+const Cast = lazy(() => import('./Cast/Cast'));
+const Reviews = lazy(() => import('./Reviews/Reviews'));
 
 const StyledLink = styled(NavLink)`
   color: black;
@@ -27,12 +31,17 @@ export const App = () => {
           <StyledLink to="/movies">Movies</StyledLink>
         </Ul>
       </nav>
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/movies" element={<Movies />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/movies/:id" element={<MovieInfo />}>
+            <Route path="reviews" element={<Reviews />} />
+            <Route path="cast" element={<Cast />} />
+          </Route>
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 };
